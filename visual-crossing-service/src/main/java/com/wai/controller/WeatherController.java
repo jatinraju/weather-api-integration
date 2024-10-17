@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wai.constants.EndPoints;
 import com.wai.pojo.WeatherResponse;
+import com.wai.pojo.WeatherResponseWithoutCurrentConditions;
 import com.wai.service.interfaces.WeatherService;
 
-// currentLocation + Now -- return one hour weather
-// currentLocation + Date -- return 24 hrs weather 
+// currentLodation -- return current + 15days weather
+// currentLocation today -- return current day + current one hour weather
+// currentLocation + Date -- specific date weather 
 // currentLocation + Date + exact time -- return one hour weather
 
 @RestController
@@ -33,6 +35,21 @@ public class WeatherController {
 	@GetMapping(EndPoints.LOCATION)
 	public ResponseEntity<WeatherResponse> getByLocation(@PathVariable("location") String location) {
 		WeatherResponse weatherResponse = weatherService.getByLocation(location);
+		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(EndPoints.LOCATION_DYNAMIC_PERIOD)
+	public ResponseEntity<WeatherResponse> getByLocationAndDynamicPeriod(@PathVariable("location") String location,
+			@PathVariable("period") String period) {
+		WeatherResponse weatherResponse = weatherService.getByLocationAndDynamicPeriod(location, period);
+		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(EndPoints.LOCATION_DATE)
+	public ResponseEntity<WeatherResponseWithoutCurrentConditions> getByLocationAndDate(
+			@PathVariable("location") String location, @PathVariable("date") String date) {
+		System.out.println("WeatherController.getByLocationAndDate() | location: " + location + " | date: " + date);
+		WeatherResponseWithoutCurrentConditions weatherResponse = weatherService.getByLocationAndDate(location, date);
 		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
 	}
 
