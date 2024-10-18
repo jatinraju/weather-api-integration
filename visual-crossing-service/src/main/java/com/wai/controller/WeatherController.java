@@ -12,11 +12,6 @@ import com.wai.pojo.WeatherResponse;
 import com.wai.pojo.WeatherResponseWithoutCurrentConditions;
 import com.wai.service.interfaces.WeatherService;
 
-// currentLodation -- return current + 15days weather
-// currentLocation today -- return current day + current one hour weather
-// currentLocation + Date -- specific date weather 
-// currentLocation + Date + exact time -- return one hour weather
-
 @RestController
 @RequestMapping(EndPoints.API_V1)
 public class WeatherController {
@@ -32,12 +27,14 @@ public class WeatherController {
 		return "This is a Test";
 	}
 
+	// Returns Current Conditions + 15 days advance
 	@GetMapping(EndPoints.LOCATION)
 	public ResponseEntity<WeatherResponse> getByLocation(@PathVariable("location") String location) {
 		WeatherResponse weatherResponse = weatherService.getByLocation(location);
 		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
 	}
 
+	// Returns dynamic period(today, yesterday, last30days, tomorrow etc..) weather
 	@GetMapping(EndPoints.LOCATION_DYNAMIC_PERIOD)
 	public ResponseEntity<WeatherResponse> getByLocationAndDynamicPeriod(@PathVariable("location") String location,
 			@PathVariable("period") String period) {
@@ -45,6 +42,7 @@ public class WeatherController {
 		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
 	}
 
+	// Returns specific date weather
 	@GetMapping(EndPoints.LOCATION_DATE)
 	public ResponseEntity<WeatherResponseWithoutCurrentConditions> getByLocationAndDate(
 			@PathVariable("location") String location, @PathVariable("date") String date) {
@@ -53,4 +51,23 @@ public class WeatherController {
 		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
 	}
 
+	// Returns specific date + specific hour weather
+	@GetMapping(EndPoints.LOCATION_DATE_TIME)
+	public ResponseEntity<WeatherResponse> getByLocationAndDateTime(@PathVariable("location") String location,
+			@PathVariable("date") String date, @PathVariable("time") String time) {
+		System.out.println("WeatherController.getByLocationAndDateTime() | location: " + location + " | date: " + date
+				+ " | time: " + time);
+		WeatherResponse weatherResponse = weatherService.getByLocationAndDateTime(location, date, time);
+		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
+	}
+
+	// Returns weather within specified date range
+	@GetMapping(EndPoints.LOCATION_DATE_RANGE)
+	public ResponseEntity<WeatherResponse> getByLocationAndDateRange(@PathVariable("location") String location,
+			@PathVariable("from") String from, @PathVariable("to") String to) {
+		System.out.println("WeatherController.getByLocationAndDateRange() | location: " + location + "| from: " + from
+				+ " | to: " + to);
+		WeatherResponse weatherResponse = weatherService.getByLocationAndDateRange(location, from, to);
+		return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
+	}
 }

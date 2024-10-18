@@ -7,7 +7,8 @@ public class EndPoints {
 	public static final String TEST = "/test";
 
 	public static final String LOCATION = "/{location}";
-	public static final String LOCATION_DYNAMIC_PERIOD = "/{location}/{period}";
-	public static final String LOCATION_DATE = "/{location}/{date}";
-	public static final String LOCATION_DATE_TIME = "/{location}/{date}/time";
+	public static final String LOCATION_DYNAMIC_PERIOD = "/period/{location}/{period}";
+	public static final String LOCATION_DATE = "/date/{location}/{date}";
+	public static final String LOCATION_DATE_RANGE = "/daterange/{location}/{from}/{to}";
+	public static final String LOCATION_DATE_TIME = "/datetime/{location}/{date}/{time}";
 }

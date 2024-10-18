@@ -11,4 +11,7 @@ public interface WeatherService {
 
 	WeatherResponse getByLocationAndDynamicPeriod(String location, String period);
 
+	WeatherResponse getByLocationAndDateTime(String location, String date, String time);
+
+	WeatherResponse getByLocationAndDateRange(String location, String from, String to);
 }

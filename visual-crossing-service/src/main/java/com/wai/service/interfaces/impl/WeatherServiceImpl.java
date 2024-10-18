@@ -89,4 +89,34 @@ public class WeatherServiceImpl implements WeatherService {
 		return modelMapper.map(weather, WeatherResponse.class);
 	}
 
+	@Override
+	public WeatherResponse getByLocationAndDateTime(String location, String date, String time) {
+		System.out.println("WeatherServiceImpl.getByLocationAndDateTime() | location : " + location + " | date: " + date
+				+ " | time: " + time);
+		String url = visualWeatherBaseUrl + location + "/" + date + "T" + time + "?key=" + visualWeatherApiKey
+				+ visualWeatherDataUrl;
+		HttpRequest request = prepareHttpRequest(url);
+		ResponseEntity<String> response = httpServiceEngine.makeHttpRequest(request);
+		System.out.println(response.getBody());
+
+		Weather weather = gson.fromJson(response.getBody(), Weather.class);
+		System.out.println(weather);
+		return modelMapper.map(weather, WeatherResponse.class);
+	}
+
+	@Override
+	public WeatherResponse getByLocationAndDateRange(String location, String from, String to) {
+		System.out.println("WeatherServiceImpl.getByLocationAndDateTime() | location : " + location + " | from: " + from
+				+ " | to: " + to);
+		String url = visualWeatherBaseUrl + location + "/" + from + "/" + to + "?key=" + visualWeatherApiKey
+				+ visualWeatherDataUrl;
+		HttpRequest request = prepareHttpRequest(url);
+		ResponseEntity<String> response = httpServiceEngine.makeHttpRequest(request);
+		System.out.println(response.getBody());
+
+		Weather weather = gson.fromJson(response.getBody(), Weather.class);
+		System.out.println(weather);
+		return modelMapper.map(weather, WeatherResponse.class);
+	}
+
 }
